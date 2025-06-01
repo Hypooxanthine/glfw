@@ -1945,6 +1945,9 @@ typedef void (* GLFWcharfun)(GLFWwindow* window, unsigned int codepoint);
  */
 typedef void (* GLFWcharmodsfun)(GLFWwindow* window, unsigned int codepoint, int mods);
 
+typedef void (* GLFWdropenterfun)(GLFWwindow* window, int entered);
+
+
 /*! @brief The function pointer type for path drop callbacks.
  *
  *  This is the function pointer type for path drop callbacks.  A path drop
@@ -5429,6 +5432,8 @@ GLFWAPI GLFWcursorenterfun glfwSetCursorEnterCallback(GLFWwindow* window, GLFWcu
  *  @ingroup input
  */
 GLFWAPI GLFWscrollfun glfwSetScrollCallback(GLFWwindow* window, GLFWscrollfun callback);
+
+GLFWAPI GLFWdropenterfun glfwSetDragEnterCallback(GLFWwindow* window, GLFWdropenterfun callback);
 
 /*! @brief Sets the path drop callback.
  *

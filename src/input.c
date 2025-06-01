@@ -401,6 +401,17 @@ void _glfwInputCursorEnter(_GLFWwindow* window, GLFWbool entered)
         window->callbacks.cursorEnter((GLFWwindow*) window, entered);
 }
 
+// Notifies shared code of files or directories dragged entering or leaving a window
+//
+void _glfwInputDragEnter(_GLFWwindow* window, int entered)
+{
+    assert(window != NULL);
+    assert(entered == GLFW_TRUE || entered == GLFW_FALSE);
+
+    if (window->callbacks.drop)
+        window->callbacks.dragEnter((GLFWwindow*) window, entered);
+}
+
 // Notifies shared code of files or directories dropped on a window
 //
 void _glfwInputDrop(_GLFWwindow* window, int count, const char** paths)
@@ -1031,6 +1042,17 @@ GLFWAPI GLFWscrollfun glfwSetScrollCallback(GLFWwindow* handle,
     assert(window != NULL);
 
     _GLFW_SWAP(GLFWscrollfun, window->callbacks.scroll, cbfun);
+    return cbfun;
+}
+
+GLFWAPI GLFWdropenterfun glfwSetDragEnterCallback(GLFWwindow* handle, GLFWdropenterfun cbfun)
+{
+    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
+
+    _GLFWwindow* window = (_GLFWwindow*) handle;
+    assert(window != NULL);
+
+    _GLFW_SWAP(GLFWdropenterfun, window->callbacks.dragEnter, cbfun);
     return cbfun;
 }
 

@@ -1574,6 +1574,49 @@ static void processEvent(XEvent *event)
             else if (event->xclient.message_type == _glfw.x11.XdndEnter)
             {
                 // A drag operation has entered the window
+                _glfwInputDragEnter(window, GLFW_TRUE);
+
+                unsigned long count;
+                Atom* formats = NULL;
+                const GLFWbool list = event->xclient.data.l[1] & 1;
+
+                _glfw.x11.xdnd.source  = event->xclient.data.l[0];
+                _glfw.x11.xdnd.version = event->xclient.data.l[1] >> 24;
+                _glfw.x11.xdnd.format  = None;
+
+                if (_glfw.x11.xdnd.version > _GLFW_XDND_VERSION)
+                    return;
+
+                if (list)
+                {
+                    count = _glfwGetWindowPropertyX11(_glfw.x11.xdnd.source,
+                                                      _glfw.x11.XdndTypeList,
+                                                      XA_ATOM,
+                                                      (unsigned char**) &formats);
+                }
+                else
+                {
+                    count = 3;
+                    formats = (Atom*) event->xclient.data.l + 2;
+                }
+
+                for (unsigned int i = 0;  i < count;  i++)
+                {
+                    if (formats[i] == _glfw.x11.text_uri_list)
+                    {
+                        _glfw.x11.xdnd.format = _glfw.x11.text_uri_list;
+                        break;
+                    }
+                }
+
+                if (list && formats)
+                    XFree(formats);
+            }
+            else if (event->xclient.message_type == _glfw.x11.XdndLeave)
+            {
+                // A drag operation has left the window
+                _glfwInputDragEnter(window, GLFW_FALSE);
+
                 unsigned long count;
                 Atom* formats = NULL;
                 const GLFWbool list = event->xclient.data.l[1] & 1;

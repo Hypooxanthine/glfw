@@ -580,6 +580,7 @@ struct _GLFWwindow
         GLFWkeyfun                key;
         GLFWcharfun               character;
         GLFWcharmodsfun           charmods;
+        GLFWdropenterfun          dragEnter;
         GLFWdropfun               drop;
     } callbacks;
 
@@ -938,6 +939,7 @@ void _glfwInputScroll(_GLFWwindow* window, double xoffset, double yoffset);
 void _glfwInputMouseClick(_GLFWwindow* window, int button, int action, int mods);
 void _glfwInputCursorPos(_GLFWwindow* window, double xpos, double ypos);
 void _glfwInputCursorEnter(_GLFWwindow* window, GLFWbool entered);
+void _glfwInputDragEnter(_GLFWwindow* window, int entered);
 void _glfwInputDrop(_GLFWwindow* window, int count, const char** names);
 void _glfwInputJoystick(_GLFWjoystick* js, int event);
 void _glfwInputJoystickAxis(_GLFWjoystick* js, int axis, float value);
